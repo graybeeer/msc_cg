@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="msc_cg/msc_cg.vcxproj" Id="cc82ca8b-f842-45ac-8d98-c34e5cf7e24e" />
+</Solution>
