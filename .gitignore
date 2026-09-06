@@ -67,3 +67,40 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# 기존 내용 유지 후 아래 항목 추가
+
+# ==================================
+# Visual Studio Auto-Generated Files
+# ==================================
+.vs/
+.vscode/
+x64/
+x86/
+ARM/
+ARM64/
+Debug/
+Release/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio Database & Cache
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+*.ipch
+*.ipch.db
+*.suo
+*.user
+*.userosv
+*.sln.docstates
+
+# Executables & Intermediate Build Artifacts
+*.exe
+*.obj
+*.ilk
+*.pdb
+*.tlog
+*.log
+*.vsix
