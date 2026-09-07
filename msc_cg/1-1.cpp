@@ -12,7 +12,7 @@ char command;
 void show(const std::vector<std::vector<int>>& matrix) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            std::cout << matrix[i][j] << "\t";
+            std::cout << matrix[i][j] << " ";
         }
         std::cout << std::endl;
     }
@@ -156,7 +156,7 @@ int main() {
     show(matrix2);
 
     while (true) {
-        std::cout << "명령어를 입력하세요 (m, a, d, r, t, e, f, +, -, s, q): ";
+        std::cout << "명령어 (m, a, d, r, t, e, f, +, -, s, q): ";
         std::cin >> command;
 
         if (command == 'q') {
@@ -166,99 +166,99 @@ int main() {
 
         switch (command) {
         case 'm':
-            std::cout << "\n[두 행렬의 곱]" << std::endl;
+            std::cout << "\n두 행렬의 곱: " << std::endl;
             show(multiply(matrix1, matrix2));
             break;
         case 'a':
-            std::cout << "\n[두 행렬의 합]" << std::endl;
+            std::cout << "\n두 행렬의 합:" << std::endl;
             show(add(matrix1, matrix2));
             break;
         case 'd':
-            std::cout << "\n[두 행렬의 차 (Matrix1 - Matrix2)]" << std::endl;
+            std::cout << "\n두 행렬의 차: " << std::endl;
             show(minus(matrix1, matrix2));
             break;
         case 'r':
-            std::cout << "\n[행렬식(Determinant)]" << std::endl;
+            std::cout << "\n행렬식: " << std::endl;
             std::cout << "Matrix 1 Determinant: " << determinant(matrix1) << std::endl;
             std::cout << "Matrix 2 Determinant: " << determinant(matrix2) << std::endl;
             break;
         case 't': {
-            std::cout << "\n[Matrix 1 전치 행렬]" << std::endl;
+            std::cout << "\n행렬1 전치 행렬: " << std::endl;
             auto t1 = transpose(matrix1);
             show(t1);
-            std::cout << "Matrix 1 전치 행렬의 Determinant: " << determinant(t1) << std::endl;
+            std::cout << "행렬1 전치 행렬의 행렬식 " << determinant(t1) << std::endl;
 
-            std::cout << "\n[Matrix 2 전치 행렬]" << std::endl;
+            std::cout << "\n행렬2 전치 행렬: " << std::endl;
             auto t2 = transpose(matrix2);
             show(t2);
-            std::cout << "Matrix 2 전치 행렬의 Determinant: " << determinant(t2) << std::endl;
+            std::cout << "행렬2 전치 행렬의 행렬식: " << determinant(t2) << std::endl;
             break;
         }
         case 'e':
             e_active = !e_active;
             if (e_active) {
-                std::cout << "\n[각 행의 최솟값을 뺀 결과]" << std::endl;
-                std::cout << "<Matrix 1>" << std::endl;
+                std::cout << "\n각 행의 최솟값을 뺀 결과: " << std::endl;
+                std::cout << "행렬 1: " << std::endl;
                 show(subtract_row_min(matrix1));
-                std::cout << "<Matrix 2>" << std::endl;
+                std::cout << "행렬 2: " << std::endl;
                 show(subtract_row_min(matrix2));
             }
             else {
-                std::cout << "\n[원래 행렬 출력]" << std::endl;
-                std::cout << "<Matrix 1>" << std::endl;
+                std::cout << "\n원래 행렬: " << std::endl;
+                std::cout << "행렬 1: " << std::endl;
                 show(matrix1);
-                std::cout << "<Matrix 2>" << std::endl;
+                std::cout << "행렬 2: " << std::endl;
                 show(matrix2);
             }
             break;
         case 'f':
             f_active = !f_active;
             if (f_active) {
-                std::cout << "\n[각 열의 최댓값을 더한 결과]" << std::endl;
-                std::cout << "<Matrix 1>" << std::endl;
+                std::cout << "\n각 열의 최댓값을 더한 결과: " << std::endl;
+                std::cout << "행렬 1: " << std::endl;
                 show(add_col_max(matrix1));
-                std::cout << "<Matrix 2>" << std::endl;
+                std::cout << "행렬 2: " << std::endl;
                 show(add_col_max(matrix2));
             }
             else {
-                std::cout << "\n[원래 행렬 출력]" << std::endl;
-                std::cout << "<Matrix 1>" << std::endl;
+                std::cout << "\n원래 행렬 출력: " << std::endl;
+                std::cout << "행렬 1: " << std::endl;
                 show(matrix1);
-                std::cout << "<Matrix 2>" << std::endl;
+                std::cout << "행렬 2: " << std::endl;
                 show(matrix2);
             }
             break;
         case '+':
-            std::cout << "\n[모든 값 +1 (Mod 10)]" << std::endl;
+            std::cout << "\n모든 값 +1: " << std::endl;
             modify_values(matrix1, 1);
             modify_values(matrix2, 1);
-            std::cout << "<Matrix 1>" << std::endl;
+            std::cout << "행렬 1: " << std::endl;
             show(matrix1);
-            std::cout << "<Matrix 2>" << std::endl;
+            std::cout << "행렬 2: " << std::endl;
             show(matrix2);
             break;
         case '-':
-            std::cout << "\n[모든 값 -1 (Mod 10)]" << std::endl;
+            std::cout << "\n모든 값 -1: " << std::endl;
             modify_values(matrix1, -1);
             modify_values(matrix2, -1);
-            std::cout << "<Matrix 1>" << std::endl;
+            std::cout << "행렬 1: " << std::endl;
             show(matrix1);
-            std::cout << "<Matrix 2>" << std::endl;
+            std::cout << "행렬 2: " << std::endl;
             show(matrix2);
             break;
         case 's':
-            std::cout << "\n[행렬 값 새로 생성]" << std::endl;
+            std::cout << "\n행렬 값 새로 생성: " << std::endl;
             reset_random(matrix1);
             reset_random(matrix2);
             e_active = false;
             f_active = false;
-            std::cout << "<Matrix 1>" << std::endl;
+            std::cout << "행렬 1: " << std::endl;
             show(matrix1);
-            std::cout << "<Matrix 2>" << std::endl;
+            std::cout << "행렬 2: " << std::endl;
             show(matrix2);
             break;
         default:
-            std::cout << "잘못된 명령어입니다. 다시 입력해 주세요." << std::endl;
+            std::cout << "잘못된 명령어입니다." << std::endl;
             break;
         }
     }

@@ -61,9 +61,10 @@ int count_words(const std::string& line) {
 
 int main() {
     std::string filename;
-    std::cout << "input data file name: ";
-    std::cin >> filename;
-
+    
+    //std::cout << "input data file name: ";
+    //std::cin >> filename;
+    filename = "data.txt";
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "파일을 열 수 없습니다." << std::endl;
@@ -97,7 +98,7 @@ int main() {
 
     char command;
     while (true) {
-        std::cout << "\ninput the command (a~j, q): ";
+        std::cout << "\n명령어 (a, b, c, d, e, f, g, h, i, j, k, q): ";
         std::cin >> command;
 
         if (command == 'q') {
@@ -309,7 +310,7 @@ int main() {
             break;
         }
         default:
-            std::cout << "잘못된 명령어입니다. 다시 입력해 주세요." << std::endl;
+            std::cout << "잘못된 명령어입니다." << std::endl;
             break;
         }
     }
