@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
@@ -12,7 +12,7 @@ struct Point {
     int z = 0;
 };
 
-// 슬롯 구조체 (데이터 및 유효성 여부)
+// 슬롯 구조체 
 struct Slot {
     Point pt;
     bool occupied = false;
@@ -20,7 +20,7 @@ struct Slot {
 
 // 10개 슬롯을 가지는 리스트
 std::vector<Slot> list_data(10);
-bool f_active = false; // f 명령어 토글 플래그
+bool bool_f = false; // f 명령어 bool
 
 // 원점과의 거리 계산
 double dist_from_origin(const Point& p) {
@@ -235,12 +235,12 @@ int main() {
             print_list();
             break;
         case 'f':
-            f_active = !f_active;
-            if (f_active) {
+            bool_f = !bool_f;
+            if (bool_f) {
                 print_sorted_distance();
             }
             else {
-                std::cout << "\n[원래 상태 출력]";
+                std::cout << "\n원래 상태 출력: ";
                 print_list();
             }
             break;
@@ -248,7 +248,7 @@ int main() {
             calculate_point_pairs();
             break;
         default:
-            std::cout << "알 수 없는 명령어입니다." << std::endl;
+            std::cout << "잘못된 명령어입니다." << std::endl;
             break;
         }
     }

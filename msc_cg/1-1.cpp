@@ -86,8 +86,8 @@ int determinant(const std::vector<std::vector<int>>& matrix) {
             }
             subMatrix.push_back(row);
         }
-        int sign = (p % 2 == 0) ? 1 : -1;
-        det += sign * matrix[0][p] * determinant(subMatrix);
+		int sign = (p % 2 == 0) ? 1 : -1; // 소행렬 위치에 따라 부호 결정
+        det += sign * matrix[0][p] * determinant(subMatrix); //행렬식에 더하기
     }
     return det;
 }

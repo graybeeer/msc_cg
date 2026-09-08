@@ -12,19 +12,19 @@ void set_color(WORD color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-// 텍스트 출력 함수 (색상 초기화 포함)
-void print_color(const std::string& text, WORD color) {
+// 텍스트 출력 함수 
+void print_color(const std::string& text, WORD color = 7) {
     set_color(color);
     std::cout << text;
-    set_color(7); // 기본 색상(밝은 회색)으로 복원
+    set_color(7);
 }
 
-// 연속된 공백을 단일 공백으로 변환
+// 연속된 공백을 단일 공백으로 변환 함수
 std::string normalize_spaces(const std::string& input) {
     std::string result;
-    bool in_space = false;
+    bool in_space = false; // 연속된 공백인지 bool값
     for (char c : input) {
-        if (std::isspace(static_cast<unsigned char>(c))) {
+        if (std::isspace(static_cast<unsigned char>(c))) { //공백인지 판별
             if (!in_space) {
                 result += ' ';
                 in_space = true;
@@ -35,20 +35,18 @@ std::string normalize_spaces(const std::string& input) {
             in_space = false;
         }
     }
-    // 앞뒤 공백 제거
-    if (!result.empty() && result.front() == ' ') result.erase(result.begin());
-    if (!result.empty() && result.back() == ' ') result.pop_back();
     return result;
 }
 
 // 문장 출력 함수
 void print_lines(const std::vector<std::string>& lines) {
     for (const auto& line : lines) {
-        std::cout << line << std::endl;
+        print_color(line);
+        std::cout << std::endl;
     }
 }
 
-// 단어 개수 세기 (공백/star 구분)
+// 단어 개수 세기 (공백 구분)
 int count_words(const std::string& line) {
     std::stringstream ss(line);
     std::string word;
@@ -62,7 +60,7 @@ int count_words(const std::string& line) {
 int main() {
     std::string filename;
     
-    //std::cout << "input data file name: ";
+    //std::cout << "파일 이름 입력: ";
     //std::cin >> filename;
     filename = "data.txt";
     std::ifstream file(filename);
@@ -71,7 +69,7 @@ int main() {
         return 1;
     }
 
-    std::vector<std::string> original_lines;
+    std::vector<std::string> original_lines; // 원본 문장
     std::string line;
     while (std::getline(file, line)) {
         if (!line.empty()) {
@@ -80,25 +78,27 @@ int main() {
     }
     file.close();
 
-    std::cout << "\n=== [읽어온 파일 내용] ===" << std::endl;
+    std::cout << "\n-읽어온 파일 내용-" << std::endl;
     print_lines(original_lines);
-    std::cout << "===========================\n" << std::endl;
+    std::cout << "-----------------------------\n" << std::endl;
 
-    // 상태 토글 플래그
-    bool toggle_a = false;
-    bool toggle_c = false;
-    bool toggle_d = false;
-    bool toggle_e = false;
-    bool toggle_f = false;
-    bool toggle_g = false;
-    bool toggle_h = false;
+    // 상태 bool값
+    bool bool_a = false;
+    bool bool_c = false;
+    bool bool_d = false;
+    bool bool_e = false;
+    bool bool_f = false;
+    bool bool_g = false;
+    bool bool_h = false;
+
+	int j_count = 0; // j 명령어용 변수
 
     // g 명령어용 변수 백업
     char g_old_char = '\0', g_new_char = '\0';
 
     char command;
     while (true) {
-        std::cout << "\n명령어 (a, b, c, d, e, f, g, h, i, j, k, q): ";
+        std::cout << "\n명령어 (a, b, c, d, e, f, g, h, i, j, q): ";
         std::cin >> command;
 
         if (command == 'q') {
@@ -108,9 +108,9 @@ int main() {
 
         switch (command) {
         case 'a': {
-            toggle_a = !toggle_a;
-            std::cout << "\n[a: 대소문자 반전" << (toggle_a ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_a) {
+            bool_a = !bool_a;
+            std::cout << "\na- 대소문자 반전" << (bool_a ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_a) {
                 print_lines(original_lines);
             }
             else {
@@ -126,16 +126,16 @@ int main() {
             break;
         }
         case 'b': {
-            std::cout << "\n[b: 문장별 단어 개수 출력]" << std::endl;
+            std::cout << "\n b- 문장별 단어 개수 출력: " << std::endl;
             for (const auto& l : original_lines) {
                 std::cout << l << " (" << count_words(l) << "개)" << std::endl;
             }
             break;
         }
         case 'c': {
-            toggle_c = !toggle_c;
-            std::cout << "\n[c: 대문자로 시작하는 단어 강조" << (toggle_c ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_c) {
+            bool_c = !bool_c;
+            std::cout << "\nc- 대문자로 시작하는 단어" << (bool_c ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_c) {
                 print_lines(original_lines);
             }
             else {
@@ -149,7 +149,7 @@ int main() {
                         first = false;
 
                         if (!word.empty() && std::isupper(static_cast<unsigned char>(word[0]))) {
-                            print_color(word, 14); // 노란색으로 출력
+                            print_color(word, 11); //다른색으로 출력
                             total_count++;
                         }
                         else {
@@ -163,28 +163,34 @@ int main() {
             break;
         }
         case 'd': {
-            toggle_d = !toggle_d;
-            std::cout << "\n[d: 문장 거꾸로 출력" << (toggle_d ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_d) {
+            bool_d = !bool_d;
+            std::cout << "\nd- 문장 거꾸로 출력" << (bool_d ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_d) {
                 print_lines(original_lines);
             }
             else {
                 for (const auto& l : original_lines) {
                     std::string rev = l;
-                    std::reverse(rev.begin(), rev.end());
+					std::reverse(rev.begin(), rev.end()); //reverse 함수로 문자열 뒤집기
                     std::cout << rev << std::endl;
                 }
             }
             break;
         }
         case 'e': {
-            toggle_e = !toggle_e;
-            std::cout << "\n[e: 공백에 '*' 삽입" << (toggle_e ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_e) {
+            bool_e = !bool_e;
+            std::cout << "\ne- 공백을 *로 변경" << (bool_e ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_e) {
                 print_lines(original_lines);
             }
             else {
-                for (const auto& l : original_lines) {
+                std::vector<std::string> modified_lines(original_lines.size()); //바뀐 순서 문장 저장
+                size_t n = original_lines.size();
+                for (size_t i = 0; i < n; ++i) {
+                    modified_lines[i] = original_lines[i];
+                }
+                
+                for (const auto& l : modified_lines) {
                     std::string mod = l;
                     for (char& c : mod) {
                         if (c == ' ') c = '*';
@@ -195,9 +201,9 @@ int main() {
             break;
         }
         case 'f': {
-            toggle_f = !toggle_f;
-            std::cout << "\n[f: 각 단어 거꾸로 출력" << (toggle_f ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_f) {
+            bool_f = !bool_f;
+            std::cout << "\nf- 각 단어 거꾸로 출력" << (bool_f ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_f) {
                 print_lines(original_lines);
             }
             else {
@@ -221,9 +227,9 @@ int main() {
             break;
         }
         case 'g': {
-            toggle_g = !toggle_g;
-            std::cout << "\n[g: 특정 문자 치환" << (toggle_g ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_g) {
+            bool_g = !bool_g;
+            std::cout << "\ng- 특정 문자 치환" << (bool_g ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_g) {
                 print_lines(original_lines);
             }
             else {
@@ -243,16 +249,16 @@ int main() {
             break;
         }
         case 'h': {
-            toggle_h = !toggle_h;
-            std::cout << "\n[h: 숫자 뒤 줄바꿈" << (toggle_h ? " 적용]" : " 해제 - 원본 출력]") << std::endl;
-            if (!toggle_h) {
+            bool_h = !bool_h;
+            std::cout << "\nh- 숫자 뒤 줄바꿈" << (bool_h ? " 적용" : " 해제 ") << std::endl;
+            if (!bool_h) {
                 print_lines(original_lines);
             }
             else {
                 for (const auto& l : original_lines) {
                     for (size_t i = 0; i < l.length(); ++i) {
                         std::cout << l[i];
-                        if (std::isdigit(static_cast<unsigned char>(l[i]))) {
+                        if (std::isdigit(static_cast<unsigned char>(l[i]))) { //isdight 숫자인지 확인
                             std::cout << std::endl;
                         }
                     }
@@ -264,27 +270,40 @@ int main() {
         case 'i': {
             std::string search_word;
             std::cout << "찾을 단어를 입력하세요: ";
-            std::cin >> search_word;
 
+            // ws로 입력 버퍼에 남아있는 공백 및 줄바꿈 제거 후 입력 받기
+            std::cin >> std::ws >> search_word;
+
+            // 검색어를 소문자로 변환
             std::string lower_search = search_word;
             std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), ::tolower);
 
             int total_found = 0;
-            std::cout << "\n[i: 단어 '" << search_word << "' 검색 결과]" << std::endl;
+            std::cout << "\ni- 단어 '" << search_word << "' 검색 결과: " << std::endl;
+
             for (const auto& l : original_lines) {
-                std::stringstream ss(l);
+                std::stringstream ss(l); //입출력스트림
                 std::string word;
                 bool first = true;
+
                 while (ss >> word) {
                     if (!first) std::cout << " ";
                     first = false;
 
-                    // 구두점 등을 고려하지 않고 순수 문자열 비교 (대소문자 무시)
-                    std::string lower_word = word;
-                    std::transform(lower_word.begin(), lower_word.end(), lower_word.begin(), ::tolower);
+                    std::string clean_word = "";
+                    for (char c : word) {
+                        if (std::isalnum(static_cast<unsigned char>(c))) { // 알파벳이나 숫자인 경우만
+                            clean_word += c;
+                        }
+                    }
 
-                    if (lower_word == lower_search) {
-                        print_color(word, 11); // 밝은 하늘색으로 출력
+                    // 소문자로 변환하여 비교
+                    std::string lower_clean = clean_word;
+                    std::transform(lower_clean.begin(), lower_clean.end(), lower_clean.begin(), ::tolower);
+
+                    // 비교 및 색상 출력 
+                    if (!lower_clean.empty() && lower_clean == lower_search) {
+                        print_color(word, 11); // 다른색으로 출력
                         total_found++;
                     }
                     else {
@@ -297,15 +316,16 @@ int main() {
             break;
         }
         case 'j': {
-            std::cout << "\n[j: 문장 순서 순환 (1->2, 2->3, ..., N->1)]" << std::endl;
+            std::cout << "\nj- 문장 순서 이동 (1->2, 2->3, ..., N->1)" << std::endl;
+            j_count++;
             if (!original_lines.empty()) {
-                std::vector<std::string> shifted_lines(original_lines.size());
+                std::vector<std::string> shifted_lines(original_lines.size()); //바뀐 순서 문장 저장
                 size_t n = original_lines.size();
-                for (size_t i = 0; i < n; ++i) {
-                    shifted_lines[(i + 1) % n] = original_lines[i];
+                for (size_t i = 0; i < n; i++) {
+                    shifted_lines[(i +j_count) % n] = original_lines[i];
+					
                 }
-                original_lines = shifted_lines; // 바뀐 순서 업데이트
-                print_lines(original_lines);
+                print_lines(shifted_lines);
             }
             break;
         }
